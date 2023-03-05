@@ -5,7 +5,7 @@ require 'recipe/laravel.php';
 
 // Config
 set('application', 'Suraksha');
-set('repository', '');
+set('repository', 'git@github.com:cremirdevio/suraksha.git');
 
 add('shared_files', []);
 add('shared_dirs', []);
@@ -17,7 +17,7 @@ host('prod')
     ->set('port', '65002')
     ->set('hostname', '82.180.175.94')
     ->set('remote_user', 'u737857919')
-    ->set('deploy_path', '~/domains/surakshaproject.in/public_html/prod-api');
+    ->set('deploy_path', '~/domains/surakshaproject.in/public_html/prod-api/current');
 
 // Tasks
 
