@@ -36,7 +36,7 @@ class AuthController extends Controller
         DB::beginTransaction();
 
         try {
-            $user = $newUser->create($request);
+            $user = $newUser->create($request->toArray());
         } catch (\Throwable $e) {
             DB::rollback();
             throw $e;
@@ -45,9 +45,9 @@ class AuthController extends Controller
         DB::commit();
 
         return response()->json([
-            'message' => 'User created successfully.',
             'success' => true,
-            'data' => $user
+            'message' => 'User created successfully.',
+            'data' => new UserResource($user)
         ], 200);
     }
 
@@ -70,6 +70,7 @@ class AuthController extends Controller
 
         if (is_null($user)) {
             return response()->json([
+                'success' => false,
                 'message' => "You don't have an account with us",
                 'data' => null
             ], 400);
@@ -87,9 +88,10 @@ class AuthController extends Controller
         $agent = $request->device_name ?? $request->userAgent();
 
         return response()->json([
+            'success' => true,
             'message' => "Login successful",
             'data' => [
-                "token" => $user->createToken($user->username)->plainTextToken,
+                "token" => $user->createToken($user->email)->plainTextToken,
                 "user" => new UserResource($user)
             ]
         ]);
@@ -104,7 +106,11 @@ class AuthController extends Controller
     {
         $user = User::findOrFail(auth()->id());
         $user->tokens()->delete();
-        return response()->json(['message' => 'User logged out.'], 200);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'User logged out.'
+        ], 200);
     }
 
     /**
@@ -117,7 +123,8 @@ class AuthController extends Controller
     public function user()
     {
         return response()->json([
-            'message' => 'Successful',
+            'success' => true,
+            'message' => 'User details fetched',
             'data' => new UserResource(auth()->user()),
         ]);
     }

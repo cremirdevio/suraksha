@@ -30,8 +30,8 @@ class NewsletterController extends Controller
         Newsletter::subscribeOrUpdate($request->email);
 
         return response()->json([
-            "message" => "You have been successfully subscribed to our newsletter.",
             "success" => true,
+            "message" => "You have been successfully subscribed to our newsletter.",
             "data" => []
         ]);
     }
@@ -53,8 +53,8 @@ class NewsletterController extends Controller
         Newsletter::unsubscribe($request->email);
 
         return response()->json([
-            "message" => "You have been successfully unsubscribed to our newsletter.",
             "success" => true,
+            "message" => "You have been successfully unsubscribed to our newsletter.",
             "data" => []
         ]);
     }
